@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://xkq1qkx.github.io/Diverse-Manip-RL-web/sitemap.xml
