@@ -4,7 +4,7 @@ Design inspiration: SGS, designed by Mateo Guaman Castro, https://sgs-rl.github.
 Original design and code: © 2026 Mateo Guaman Castro, CC BY 4.0:
 https://creativecommons.org/licenses/by/4.0/ ; https://sgs-rl.github.io/terms/
 Changes: a new implementation, typography, red accent, research copy, object catalog,
-synchronized student/critic player, responsive layout and our own simulation videos.
+synchronized student/critic player, responsive layout and our own simulation and real-world videos.
 Swiss / International Typographic Style; additional inspiration acknowledged: https://neoneo.ch/.
 -->
 <html lang="en">
@@ -13,23 +13,24 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ee402a">
   <title>Diverse-Manip-RL — Many ways to grasp. One policy.</title>
-  <meta name="description" content="Diverse dexterous grasping through reset-state curricula and reinforcement learning. Explore student rollouts alongside synchronized teacher critic predictions.">
+  <meta name="description" content="Diverse dexterous grasping through reset-state curricula and reinforcement learning. Explore real-world student deployments and simulation rollouts on test and training objects with synchronized teacher critic predictions.">
   <meta property="og:title" content="Diverse-Manip-RL">
-  <meta property="og:description" content="Many ways to grasp. One policy. Explore dexterous manipulation in simulation.">
+  <meta property="og:description" content="Many ways to grasp. One policy. Explore dexterous manipulation in simulation and on the real robot.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xkq1qkx.github.io/Diverse-Manip-RL-web/">
   <meta property="og:image" content="https://xkq1qkx.github.io/Diverse-Manip-RL-web/assets/social.jpg">
   <link rel="canonical" href="https://xkq1qkx.github.io/Diverse-Manip-RL-web/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css">
-  <script src="assets/site.js" defer></script>
+  <link rel="stylesheet" href="assets/site.css?v=20261028-realworld-speed">
+  <script src="assets/site.js?v=20261028-categories" defer></script>
+  <script src="assets/realworld.js?v=20261028-speed" defer></script>
 </head>
 <body>
-<a class="skip-link" href="#explore">Skip to video explorer</a>
+<a class="skip-link" href="#realworld">Skip to real-world videos</a>
 <header class="topbar">
   <a class="wordmark" href="./" aria-label="Diverse-Manip-RL home"><span class="mark" aria-hidden="true">↗</span> DIVERSE–MANIP–RL</a>
   <nav aria-label="Main navigation">
-    <a href="#explore">Watch</a><a href="#approach">Approach</a><a href="#collection">Collection</a>
+    <a href="#realworld">Real world</a><a href="#explore">Simulation</a><a href="#approach">Approach</a><a href="#collection">Collection</a>
     <a class="source-link" href="https://github.com/xkq1qkx/Diverse-Manip-RL-web">GitHub ↗</a>
   </nav>
 </header>
@@ -41,26 +42,60 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
     <div class="hero-aside">
       <div class="hero-symbol" aria-hidden="true">↗</div>
       <p>Learning dexterous grasping from diverse starting states.</p>
-      <p class="hero-description">From a curriculum of feasible grasps to a student policy that approaches, closes the hand, and lifts.</p>
-      <a class="hero-cta" href="#explore">Explore the rollouts <span aria-hidden="true">↓</span></a>
+      <p class="hero-description">Explore the trained student in simulation and on the real robot: approaching, grasping, and lifting.</p>
+      <a class="hero-cta" href="#realworld">Watch the real robot <span aria-hidden="true">↓</span></a>
     </div>
   </div>
-  <div class="hero-bottom mono"><span>SIMULATION STUDY</span><span>7 OBJECTS <span class="slash">/</span> <span data-clip-count>31</span> ROLLOUTS <span class="slash">/</span> 1 STUDENT</span></div>
+  <div class="hero-bottom mono"><span>SIMULATION → REAL WORLD</span><span><span data-realworld-count>24</span> REAL VIDEOS <span class="slash">/</span> <span data-clip-count>75</span> SIM ROLLOUTS</span></div>
 </section>
 
+<section class="realworld section" id="realworld" aria-labelledby="realworld-title">
+  <div class="section-heading"><span class="section-number mono">01 / REAL WORLD</span><h2 id="realworld-title">From simulation to the lab.</h2><span class="section-note mono"><span data-realworld-count>24</span> VIDEOS · 2× BY DEFAULT</span></div>
+  <div class="realworld-intro"><p>Student policy deployments on the real robot.</p><p>Choose an object, then open a recording. Every cover shows the video's final frame.</p></div>
+  <div id="realworld-filters" class="realworld-filters" role="group" aria-label="Filter real-world recordings by object"></div>
+  <div class="realworld-count mono"><span id="realworld-group-label">ALL OBJECTS</span><span id="realworld-count">24 RECORDINGS</span></div>
+  <div id="realworld-grid" class="realworld-grid"></div>
+  <p id="realworld-status" class="collection-note" role="status" aria-live="polite">Loading real-world recordings…</p>
+  <noscript><p>Enable JavaScript to browse the recordings, or <a href="media/realworld/catalog.json">open the video catalog</a>.</p></noscript>
+</section>
+
+<dialog id="realworld-dialog" class="realworld-dialog" aria-labelledby="realworld-dialog-title">
+  <div class="rw-dialog-header"><span class="mono">REAL-WORLD DEMONSTRATION</span><button id="realworld-close" type="button" aria-label="Close video">Close ×</button></div>
+  <div class="rw-dialog-body">
+    <div class="rw-screen"><video id="realworld-video" controls controlslist="noplaybackrate" playsinline muted preload="none" aria-label="Real-world student policy deployment"></video></div>
+    <div class="rw-dialog-info">
+      <span id="realworld-dialog-index" class="mono">01 / 24</span>
+      <h3 id="realworld-dialog-title">Real-world recording</h3>
+      <p id="realworld-dialog-meta" class="mono"></p>
+      <p class="rw-dialog-description">Student policy deployment on the real robot.</p>
+      <label class="rw-speed-control" for="realworld-speed">Playback speed
+        <select id="realworld-speed"><option value="2" selected>2× (default)</option><option value="1">1× (original speed)</option></select>
+      </label>
+      <div class="rw-dialog-navigation"><button id="realworld-previous" type="button" aria-label="Previous recording">← Previous</button><button id="realworld-next" type="button" aria-label="Next recording">Next →</button></div>
+      <div class="rw-dialog-links"><a id="realworld-download" download>Download MP4 ↗</a><button id="realworld-share" type="button">Copy clip link ↗</button></div>
+      <p id="realworld-video-status" class="collection-note" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</dialog>
+
 <section class="explore section" id="explore" aria-labelledby="explore-title">
-  <div class="section-heading"><span class="section-number mono">01 / EXPLORE</span><h2 id="explore-title">The policy in action.</h2><span class="section-note mono">PAIRED VIDEO · 1× BY DEFAULT</span></div>
-  <div id="object-tabs" class="object-tabs" role="group" aria-label="Select an object"></div>
+  <div class="section-heading"><span class="section-number mono">02 / SIMULATION</span><h2 id="explore-title">Grasping unseen objects.</h2><span class="section-note mono">PAIRED VIDEO · 1× BY DEFAULT</span></div>
+  <div id="split-tabs" class="split-tabs" role="group" aria-label="Select test or training objects">
+    <button type="button" data-split="test" aria-pressed="true"><span>Test set</span><small>UNSEEN OBJECTS · <span data-test-clip-count>48</span> ROLLOUTS</small></button>
+    <button type="button" data-split="train" aria-pressed="false"><span>Training set</span><small>SEEN OBJECTS · <span data-train-clip-count>27</span> ROLLOUTS</small></button>
+  </div>
+  <div class="test-collection-note" aria-live="polite"><span id="split-label" class="mono">UNSEEN TEST OBJECTS</span><p id="split-description">These test objects were <strong>never seen during training</strong>. Browse <strong>11 categories</strong> and 48 rollouts.</p></div>
+  <div id="object-tabs" class="object-tabs" role="group" aria-label="Select an object category"></div>
   <div class="episode-heading"><div><span class="mono" id="episode-index">01 / 05</span><h3 id="episode-title">Cup</h3></div><p id="episode-meta" class="mono">Loading rollouts…</p></div>
   <div id="paired-player" class="paired-player">
     <div class="videos">
       <figure class="video-pane">
         <figcaption><span><i class="dot red"></i> Student rollout</span><span class="mono">SIMULATION</span></figcaption>
-        <video id="grasp-video" playsinline muted preload="metadata" aria-label="Student grasping rollout"></video>
+        <div class="video-screen"><video id="grasp-video" playsinline muted preload="metadata" aria-label="Student grasping rollout"></video><img id="grasp-cover" class="video-cover" alt="Final frame of the selected student rollout" hidden></div>
       </figure>
       <figure class="video-pane">
         <figcaption><span><i class="dot dark"></i> Teacher critic · V(s)</span><span class="mono">SAME TRAJECTORY</span></figcaption>
-        <video id="critic-video" playsinline muted preload="metadata" aria-label="Teacher critic value over the student rollout"></video>
+        <div class="video-screen"><video id="critic-video" playsinline muted preload="metadata" aria-label="Teacher critic value over the student rollout"></video><img id="critic-cover" class="video-cover" alt="Final frame of the selected teacher critic curve" hidden></div>
       </figure>
     </div>
     <div class="transport">
@@ -78,12 +113,12 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
   <div class="player-caption"><p>Student actions, teacher perspective. Both videos follow the same rollout.</p><div><a id="download-grasp" download>Grasp MP4 ↗</a><a id="download-critic" download>Critic MP4 ↗</a><button id="share-clip" type="button">Copy clip link ↗</button></div></div>
   <div class="clip-strip-heading mono"><span>CHOOSE A STARTING STATE</span><span id="clip-count-label">5 ROLLOUTS</span></div>
   <div id="clip-strip" class="clip-strip" role="group" aria-label="Select a rollout"></div>
-  <p class="collection-note">Selected rollouts with meshes of our 3D-printed lab objects. These videos show simulation deployments, and are not an aggregate success-rate evaluation.</p>
+  <p class="collection-note">Choose a dataset, category, and recording. All covers and waiting previews show the final frame; playback starts at the beginning. Recorded outcomes are preserved. These selected examples are not an aggregate success-rate evaluation.</p>
   <noscript><p>Enable JavaScript to select and synchronize videos. You can also <a href="media/catalog.json">browse the video catalog</a>.</p></noscript>
 </section>
 
 <section class="approach section" id="approach" aria-labelledby="approach-title">
-  <div class="section-heading"><span class="section-number mono">02 / APPROACH</span><h2 id="approach-title">Diversity starts at reset.</h2></div>
+  <div class="section-heading"><span class="section-number mono">03 / APPROACH</span><h2 id="approach-title">Diversity starts at reset.</h2></div>
   <div class="statement"><span class="mono">THE IDEA</span><p>Give reinforcement learning many feasible places to begin. Then extend the task from <span>grasping nearby</span> to <span>reaching from afar.</span></p></div>
   <div class="method-grid">
     <article><span class="mono step-number">01</span><h3>Seed the possibilities.</h3><p>Optimize candidate grasps and filter for reachability and collision constraints. Use these states to expose a single policy to a variety of grasp configurations.</p></article>
@@ -94,13 +129,16 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
 </section>
 
 <section class="collection section" id="collection" aria-labelledby="collection-title">
-  <div class="section-heading"><span class="section-number mono">03 / COLLECTION</span><h2 id="collection-title">Seven shapes. Different starts.</h2><span class="section-note mono"><span data-clip-count>31</span> PAIRED ROLLOUTS</span></div>
+  <div class="section-heading"><span class="section-number mono">04 / SIMULATION COLLECTION</span><h2 id="collection-title">Test objects. Training objects.</h2><span class="section-note mono"><span data-clip-count>75</span> ROLLOUTS</span></div>
+  <div class="collection-split-heading"><h3>Test set <span>Unseen objects</span></h3><span class="mono"><span data-test-category-count>11</span> CATEGORIES · <span data-test-clip-count>48</span> ROLLOUTS</span></div>
   <div id="object-grid" class="object-grid"></div>
+  <div class="collection-split-heading"><h3>Training set <span>Seen objects</span></h3><span class="mono"><span data-train-category-count>9</span> CATEGORIES · <span data-train-clip-count>27</span> ROLLOUTS</span></div>
+  <div id="train-object-grid" class="object-grid"></div>
 </section>
 </main>
 <footer id="credits">
   <div class="footer-title"><a href="#page-title">Diverse–<br>Manip–RL<span>↗</span></a><div><span class="mono">DEXTEROUS MANIPULATION</span><p>Many ways to grasp.<br>One policy.</p><a href="https://github.com/xkq1qkx/Diverse-Manip-RL-web">Website source ↗</a></div></div>
-  <div class="credits-grid"><span class="mono">DESIGN & ATTRIBUTION</span><p>Design inspired by <a href="https://sgs-rl.github.io/">SGS</a>, designed by <strong>Mateo Guaman Castro</strong>. Original design and code © 2026 Mateo Guaman Castro, <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>. This adaptation changes the layout, typography, colors, content, and video interactions. Inspired by Swiss / International Typographic Style, with acknowledgment to <a href="https://neoneo.ch/">neoneo.ch</a>, also credited by the original designer. <a href="https://sgs-rl.github.io/terms/">Original terms ↗</a></p><p>All videos shown here come from Diverse-Manip-RL simulations. No SGS videos, paper figures, or experimental results are reproduced.<br><br>© 2026 Diverse-Manip-RL project contributors.</p></div>
+  <div class="credits-grid"><span class="mono">DESIGN & ATTRIBUTION</span><p>Design inspired by <a href="https://sgs-rl.github.io/">SGS</a>, designed by <strong>Mateo Guaman Castro</strong>. Original design and code © 2026 Mateo Guaman Castro, <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>. This adaptation changes the layout, typography, colors, content, and video interactions. Inspired by Swiss / International Typographic Style, with acknowledgment to <a href="https://neoneo.ch/">neoneo.ch</a>, also credited by the original designer. <a href="https://sgs-rl.github.io/terms/">Original terms ↗</a></p><p>All videos shown here come from Diverse-Manip-RL simulations and real-world experiments. No SGS videos, paper figures, or experimental results are reproduced.<br><br>© 2026 Diverse-Manip-RL project contributors.</p></div>
 </footer>
 </body>
 </html>

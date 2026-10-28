@@ -9,7 +9,7 @@ Original terms: https://sgs-rl.github.io/terms/.
 
 This is a new implementation with changes to the typography, red accent palette,
 page composition, research text, responsive behavior, object collection,
-synchronized student/critic video player, and media. Attribution is also displayed
+synchronized student/critic video player, real-world video gallery, and media. Attribution is also displayed
 in the page footer and recorded in the HTML, CSS and JavaScript source.
 
 The underlying visual tradition is Swiss design / International Typographic Style.
@@ -17,7 +17,7 @@ We also acknowledge [neoneo.ch](https://neoneo.ch/), the Swiss design studio cre
 as an inspiration by the original designer.
 
 All videos on this site were supplied by the Diverse-Manip-RL project and show its
-own simulated robot rollouts. No SGS videos, paper figures, text, or results were
+own simulated robot rollouts and real-world experiments. No SGS videos, paper figures, text, or results were
 copied into this project. The original site's license does not grant rights to
 Diverse-Manip-RL media. System fonts are used; no third-party font files are bundled.
 

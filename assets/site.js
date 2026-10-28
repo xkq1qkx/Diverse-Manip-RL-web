@@ -5,8 +5,11 @@
   const $ = (id) => document.getElementById(id);
   const grasp = $("grasp-video"), critic = $("critic-video"), videos = [grasp, critic];
   const playButton = $("play-pause"), timeline = $("timeline"), status = $("player-status");
-  let catalog, object, clip, generation = 0, wanted = false, starting = false, buffering = false;
+  let catalogs, catalog, split = "test", object, clip, generation = 0, wanted = false, starting = false, buffering = false;
   let scrubWasPlaying = false;
+  const covers = [$("grasp-cover"), $("critic-cover")];
+  const splitName = () => split === "test" ? "Unseen test object" : "Training-set object";
+  function showCovers(show) { covers.forEach((cover) => { cover.hidden = !show; }); }
   const pad = (n) => String(n).padStart(2, "0");
   const clock = (t) => Math.floor(Math.max(0, t) / 60) + ":" + pad(Math.floor(Math.max(0, t)) % 60);
   const signed = (n) => (n >= 0 ? "+" : "") + n.toFixed(1);
@@ -43,7 +46,7 @@
       await Promise.all(videos.map((v) => v.play()));
       if (token !== generation) return;
       if (!wanted) videos.forEach((v) => v.pause());
-      else setStatus("Playing in sync · Student rollout + teacher critic");
+      else { showCovers(false); setStatus("Playing in sync · Student rollout + teacher critic"); }
     } catch (error) {
       if (token === generation && error.name !== "AbortError") {
         pause("Playback could not start. Press Play to try again, or open the MP4 links below.");
@@ -72,6 +75,7 @@
   timeline.addEventListener("keydown", () => { if (wanted) scrubWasPlaying = true; pause(); });
   timeline.addEventListener("input", () => {
     if (wanted) { scrubWasPlaying = true; pause(); }
+    showCovers(false);
     const t = Number(timeline.value);
     videos.forEach((v) => { if (Number.isFinite(v.duration)) v.currentTime = Math.min(t, v.duration); });
     paintTime(); setStatus("Scrubbing both videos · " + t.toFixed(1) + " s");
@@ -137,6 +141,7 @@
     requestAnimationFrame(synchronize);
   }
   requestAnimationFrame(synchronize);
+  window.addEventListener("realworld-open", () => pause("Paused while a real-world recording is open"));
   document.addEventListener("visibilitychange", () => {
     if (document.hidden && wanted) pause("Paused while the page is in the background");
   });
@@ -145,9 +150,10 @@
       const button = document.createElement("button");
       button.className = "clip-button"; button.type = "button";
       button.setAttribute("aria-pressed", String(item.id === clip.id));
-      button.setAttribute("aria-label", object.name + " rollout " + item.number + ", pose " + item.pose);
+      button.setAttribute("aria-label", object.name + " rollout " + item.number + ", pose " + item.pose + ", " + item.outcome);
+      button.title = item.outcome + " · " + splitName();
       const image = document.createElement("img");
-      image.src = item.thumbnail; image.alt = ""; image.loading = "lazy"; image.width = 480; image.height = 216;
+      image.src = item.thumbnail; image.alt = ""; image.loading = "lazy"; image.width = 480; image.height = 270;
       const label = document.createElement("span");
       const name = document.createElement("span"); name.textContent = "Take " + pad(item.number);
       const pose = document.createElement("span"); pose.className = "clip-pose"; pose.textContent = "POSE " + pad(item.pose);
@@ -163,14 +169,17 @@
     clip = object.clips.find((c) => c.id === clipId) || object.clips[0];
     $("episode-title").textContent = object.name;
     $("episode-index").textContent = pad(clip.number) + " / " + pad(object.clips.length);
-    $("episode-meta").textContent = "POSE " + pad(clip.pose) + "  /  X " + signed(clip.xCm) + " cm  /  Y " + signed(clip.yCm) + " cm  /  " + clip.simulationSeconds.toFixed(1) + " s";
+    $("episode-meta").textContent = "POSE " + pad(clip.pose) + "  /  X " + signed(clip.xCm) + " cm  /  Y " + signed(clip.yCm) + " cm  /  " + clip.simulationSeconds.toFixed(1) + " s  /  " + clip.outcome.toUpperCase();
     $("download-grasp").href = clip.grasp; $("download-critic").href = clip.critic;
     $("download-grasp").download = object.id + "-pose-" + clip.pose + "-grasp.mp4";
     $("download-critic").download = object.id + "-pose-" + clip.pose + "-critic.mp4";
     playButton.disabled = true; timeline.disabled = true; timeline.value = "0";
     setStatus("Loading paired videos…");
+    showCovers(true);
     for (const [i, video] of videos.entries()) {
-      video.poster = i === 0 ? clip.poster : clip.criticPoster;
+      const poster = i === 0 ? clip.poster : clip.criticPoster;
+      covers[i].src = poster;
+      video.poster = poster;
       video.src = i === 0 ? clip.grasp : clip.critic;
       video.preload = "auto";
       video.playbackRate = Number($("playback-speed").value);
@@ -180,41 +189,83 @@
     renderClips(); paintTime();
     if (updateUrl) {
       const url = new URL(location.href);
+      url.searchParams.set("split", split);
       url.searchParams.set("object", object.id); url.searchParams.set("pose", String(clip.pose));
+      url.searchParams.set("clip", clip.id);
       history.replaceState(null, "", url);
     }
   }
+  function setSplit(nextSplit, objectId, clipId, updateUrl = true) {
+    split = nextSplit === "train" ? "train" : "test";
+    catalog = catalogs[split];
+    $("split-tabs").querySelectorAll("button").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.split === split));
+    });
+    $("explore-title").textContent = split === "test" ? "Grasping unseen objects." : "Grasping training objects.";
+    $("split-label").textContent = split === "test" ? "UNSEEN TEST OBJECTS" : "SEEN TRAINING OBJECTS";
+    $("split-description").innerHTML = split === "test"
+      ? "These test objects were <strong>never seen during training</strong>. Browse <strong>" + catalog.categoryCount + " categories</strong> and " + catalog.clipCount + " rollouts."
+      : "Examples from the <strong>418-object training set</strong>, organized into <strong>" + catalog.categoryCount + " categories</strong> with " + catalog.clipCount + " rollouts.";
+    $("object-tabs").replaceChildren(...catalog.objects.map((obj) => {
+      const tab = document.createElement("button"); tab.type = "button"; tab.dataset.object = obj.id;
+      const title = document.createElement("span"); title.textContent = obj.name;
+      const count = document.createElement("small"); count.textContent = pad(obj.clips.length);
+      tab.append(title, count); tab.addEventListener("click", () => select(obj.id));
+      return tab;
+    }));
+    select(objectId, clipId, updateUrl);
+  }
+  function renderCollection(key) {
+    const data = catalogs[key], grid = $(key === "test" ? "object-grid" : "train-object-grid");
+    const label = key === "test" ? "Unseen test objects" : "Training-set objects";
+    for (const [index, obj] of data.objects.entries()) {
+      const card = document.createElement("button"); card.className = "object-card"; card.type = "button";
+      card.dataset.split = key; card.dataset.category = obj.id;
+      card.setAttribute("aria-label", "Watch " + obj.name + ": " + obj.clips.length + " rollouts · " + label);
+      const imageBox = document.createElement("div");
+      const image = document.createElement("img"); image.src = obj.clips[0].thumbnail; image.loading = "lazy";
+      image.alt = obj.name + " · " + label + " · Final frame in simulation"; image.width = 480; image.height = 270;
+      imageBox.append(image);
+      const meta = document.createElement("span"), name = document.createElement("strong"), note = document.createElement("small");
+      name.textContent = obj.name; note.className = "mono"; note.textContent = pad(index+1) + " / " + obj.clips.length + " TAKES ↗";
+      meta.append(name, note); card.append(imageBox, meta);
+      card.addEventListener("click", () => {
+        setSplit(key, obj.id);
+        $("explore").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"});
+      });
+      grid.append(card);
+    }
+    const total = document.createElement("div"); total.className = "collection-total";
+    total.innerHTML = "<span class='mono'>" + (key === "test" ? "TEST SET" : "TRAINING SET") + "</span><strong>" + data.clipCount + "</strong><p>Starting states.<br>Paired perspectives.</p>";
+    grid.append(total);
+  }
   async function initialize() {
     try {
-      const response = await fetch("media/catalog.json");
-      if (!response.ok) throw new Error("Catalog unavailable");
-      catalog = await response.json();
-      document.querySelectorAll("[data-clip-count]").forEach((el) => { el.textContent = catalog.clipCount; });
-      for (const [index, obj] of catalog.objects.entries()) {
-        const tab = document.createElement("button"); tab.type = "button"; tab.dataset.object = obj.id;
-        const title = document.createElement("span"); title.textContent = obj.name;
-        const count = document.createElement("small"); count.textContent = pad(obj.clips.length);
-        tab.append(title, count); tab.addEventListener("click", () => select(obj.id));
-        $("object-tabs").append(tab);
-        const card = document.createElement("button"); card.className = "object-card"; card.type = "button";
-        card.setAttribute("aria-label", "Watch " + obj.name + ": " + obj.clips.length + " rollouts");
-        const imageBox = document.createElement("div");
-        const image = document.createElement("img"); image.src = obj.clips[0].thumbnail; image.loading = "lazy";
-        image.alt = obj.name + " and the robot hand in simulation"; image.width = 480; image.height = 300;
-        imageBox.append(image);
-        const meta = document.createElement("span"), name = document.createElement("strong"), note = document.createElement("small");
-        name.textContent = obj.name; note.className = "mono"; note.textContent = pad(index+1) + " / " + obj.clips.length + " TAKES ↗";
-        meta.append(name, note); card.append(imageBox, meta);
-        card.addEventListener("click", () => { select(obj.id); $("explore").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"}); });
-        $("object-grid").append(card);
+      const data = await Promise.all(["media/catalog.json", "media/train/catalog.json"].map(async (path) => {
+        const response = await fetch(path, {cache: "no-cache"});
+        if (!response.ok) throw new Error("Catalog unavailable: " + path);
+        return response.json();
+      }));
+      catalogs = {test: data[0], train: data[1]};
+      document.querySelectorAll("[data-clip-count]").forEach((el) => { el.textContent = data[0].clipCount + data[1].clipCount; });
+      for (const key of ["test", "train"]) {
+        for (const [suffix, value] of [["clip-count", catalogs[key].clipCount], ["category-count", catalogs[key].categoryCount]]) {
+          document.querySelectorAll("[data-" + key + "-" + suffix + "]").forEach((el) => { el.textContent = value; });
+        }
+        renderCollection(key);
       }
-      const total = document.createElement("div"); total.className = "collection-total";
-      total.innerHTML = "<span class='mono'>THE COLLECTION</span><strong>" + catalog.clipCount + "</strong><p>Starting states.<br>Paired perspectives.</p>";
-      $("object-grid").append(total);
+      $("split-tabs").querySelectorAll("button").forEach((button) => {
+        button.addEventListener("click", () => setSplit(button.dataset.split));
+      });
       const params = new URLSearchParams(location.search);
-      const initial = catalog.objects.find((o) => o.id === params.get("object")) || catalog.objects[0];
-      const initialClip = initial.clips.find((c) => String(c.pose) === params.get("pose")) || initial.clips[0];
-      select(initial.id, initialClip.id, false);
+      const key = params.get("split") === "train" ? "train" : "test";
+      // Preserve older shared links to shoe examples, now in a single category.
+      const legacyShoe = key === "test" && /^shoe-(16|17|45)$/.test(params.get("object") || "");
+      const initial = catalogs[key].objects.find((o) => o.id === (legacyShoe ? "shoes" : params.get("object"))) || catalogs[key].objects[0];
+      const initialClip = initial.clips.find((c) => c.id === params.get("clip"))
+        || initial.clips.find((c) => String(c.pose) === params.get("pose") && (!legacyShoe || c.objectIndex === Number(params.get("object").slice(5))))
+        || initial.clips[0];
+      setSplit(key, initial.id, initialClip.id, false);
     } catch (error) {
       setStatus("The video catalog could not load. Please refresh the page.");
       console.error(error);
