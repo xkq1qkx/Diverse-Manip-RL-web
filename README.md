@@ -1,7 +1,7 @@
 # Diverse-Manip-RL project website
 
 English project homepage with 24 silent real-world recordings across five object
-groups, plus 75 paired simulation-rollout and teacher-critic videos: 48 in 11 unseen-test
+groups, plus 75 paired simulation-rollout and combined teacher V/V0 videos: 48 in 11 unseen-test
 categories and 27 in nine training-set categories.
 
 **Website:** https://xkq1qkx.github.io/Diverse-Manip-RL-web/
@@ -36,7 +36,27 @@ categories containing multiple meshes with the same pose number.
 
 The simulation and real-world sections are labeled separately. These examples are
 not an aggregate success-rate evaluation. The teacher critic estimates discounted return
-under the teacher policy, evaluated on the student's current state.
+under the teacher policy, evaluated on the student's current state. Blue V uses the
+observed episode time; green V0 sets only the episode-time input to zero. All other
+inputs are retained, and both curves share actual simulation time on the horizontal
+axis. Neither curve is a success probability. The 75 simulation settings were
+rerecorded together with both critic values; every displayed video pair comes from
+the same new recording. English video text uses Times New Roman.
+
+### Import the verified V/V0 rerecordings
+
+~~~bash
+python3 tools/import_v0_rollouts.py --source-root /path/to/artifacts/videos_v0_20261109 --jobs 3
+~~~
+
+This updates the existing 75 clip IDs and category groups. It copies each new
+student rollout and its combined V/V0 video, checks the paired timelines, decodes
+the actual last frames for all covers, and updates duration/outcome metadata.
+Content hashes in media URLs invalidate old cached videos and thumbnails.
+The website filename `teacher_critic.mp4` now contains both V and V0; catalogs
+identify this with `criticVariant: V_and_V0`. Only website media and sanitized
+metadata are imported; checkpoints and full critic observations stay outside the
+website repository. The original recordings remain in the source project.
 
 ## Re-import local renders
 

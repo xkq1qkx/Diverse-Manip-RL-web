@@ -46,7 +46,7 @@
       await Promise.all(videos.map((v) => v.play()));
       if (token !== generation) return;
       if (!wanted) videos.forEach((v) => v.pause());
-      else { showCovers(false); setStatus("Playing in sync · Student rollout + teacher critic"); }
+      else { showCovers(false); setStatus("Playing in sync · Student rollout + teacher V and V0"); }
     } catch (error) {
       if (token === generation && error.name !== "AbortError") {
         pause("Playback could not start. Press Play to try again, or open the MP4 links below.");
@@ -172,7 +172,7 @@
     $("episode-meta").textContent = "POSE " + pad(clip.pose) + "  /  X " + signed(clip.xCm) + " cm  /  Y " + signed(clip.yCm) + " cm  /  " + clip.simulationSeconds.toFixed(1) + " s  /  " + clip.outcome.toUpperCase();
     $("download-grasp").href = clip.grasp; $("download-critic").href = clip.critic;
     $("download-grasp").download = object.id + "-pose-" + clip.pose + "-grasp.mp4";
-    $("download-critic").download = object.id + "-pose-" + clip.pose + "-critic.mp4";
+    $("download-critic").download = object.id + "-pose-" + clip.pose + "-V-and-V0.mp4";
     playButton.disabled = true; timeline.disabled = true; timeline.value = "0";
     setStatus("Loading paired videos…");
     showCovers(true);

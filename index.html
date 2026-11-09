@@ -21,8 +21,8 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
   <meta property="og:image" content="https://xkq1qkx.github.io/Diverse-Manip-RL-web/assets/social.jpg">
   <link rel="canonical" href="https://xkq1qkx.github.io/Diverse-Manip-RL-web/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css?v=20261028-realworld-speed">
-  <script src="assets/site.js?v=20261028-categories" defer></script>
+  <link rel="stylesheet" href="assets/site.css?v=20261109-v0">
+  <script src="assets/site.js?v=20261109-v0" defer></script>
   <script src="assets/realworld.js?v=20261028-speed" defer></script>
 </head>
 <body>
@@ -94,8 +94,8 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
         <div class="video-screen"><video id="grasp-video" playsinline muted preload="metadata" aria-label="Student grasping rollout"></video><img id="grasp-cover" class="video-cover" alt="Final frame of the selected student rollout" hidden></div>
       </figure>
       <figure class="video-pane">
-        <figcaption><span><i class="dot dark"></i> Teacher critic · V(s)</span><span class="mono">SAME TRAJECTORY</span></figcaption>
-        <div class="video-screen"><video id="critic-video" playsinline muted preload="metadata" aria-label="Teacher critic value over the student rollout"></video><img id="critic-cover" class="video-cover" alt="Final frame of the selected teacher critic curve" hidden></div>
+        <figcaption><span><i class="dot dark"></i> Teacher critic · V &amp; V₀</span><span class="mono">SAME TRAJECTORY</span></figcaption>
+        <div class="video-screen"><video id="critic-video" playsinline muted preload="metadata" aria-label="Teacher critic V and time-zero V0 over the student rollout"></video><img id="critic-cover" class="video-cover" alt="Final frame of the selected teacher critic V and V0 curves" hidden></div>
       </figure>
     </div>
     <div class="transport">
@@ -110,7 +110,7 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
     </div>
     <p id="player-status" class="player-status mono" role="status" aria-live="polite">Loading paired videos…</p>
   </div>
-  <div class="player-caption"><p>Student actions, teacher perspective. Both videos follow the same rollout.</p><div><a id="download-grasp" download>Grasp MP4 ↗</a><a id="download-critic" download>Critic MP4 ↗</a><button id="share-clip" type="button">Copy clip link ↗</button></div></div>
+  <div class="player-caption"><p>Same rollout: <span class="critic-v">V uses observed time</span>; <span class="critic-v0">V₀ sets the time input to zero</span>.</p><div><a id="download-grasp" download>Grasp MP4 ↗</a><a id="download-critic" download>V + V₀ MP4 ↗</a><button id="share-clip" type="button">Copy clip link ↗</button></div></div>
   <div class="clip-strip-heading mono"><span>CHOOSE A STARTING STATE</span><span id="clip-count-label">5 ROLLOUTS</span></div>
   <div id="clip-strip" class="clip-strip" role="group" aria-label="Select a rollout"></div>
   <p class="collection-note">Choose a dataset, category, and recording. All covers and waiting previews show the final frame; playback starts at the beginning. Recorded outcomes are preserved. These selected examples are not an aggregate success-rate evaluation.</p>
@@ -125,7 +125,7 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
     <article><span class="mono step-number">02</span><h3>Expand the starting states.</h3><p>Open the fingers, move the hand farther from the object, and randomize object position. Retain earlier settings as the curriculum becomes harder.</p></article>
     <article><span class="mono step-number">03</span><h3>Distill the controller.</h3><p>Train a student with behavior cloning and DAgger. Its inputs combine object pose, mesh features, hand state, and recent actions.</p></article>
   </div>
-  <div class="critic-note"><div><span class="mono">READING THE CRITIC</span><h3>A prediction of<br>what comes next.</h3></div><div><p>The teacher critic estimates discounted future reward from the current state, assuming the teacher continues from there. Here, we evaluate it along the <em>student’s</em> trajectory.</p><p class="secondary">V(s) is not a success probability or the immediate reward. The curve is sampled at the 10 Hz control rate; intermediate video frames retain the latest prediction.</p></div><div class="value-formula" aria-label="V pi of s equals the expected sum over k of gamma to the k times reward at t plus k">V<sup>π</sup>(s)<br><span>= E<sub>π</sub>[ Σ<sub>k≥0</sub> γ<sup>k</sup> r<sub>t+k</sub> | s<sub>t</sub>=s ]</span></div></div>
+  <div class="critic-note"><div><span class="mono">READING THE CRITIC</span><h3>One state.<br>Two time inputs.</h3></div><div><p>The teacher critic estimates discounted return from the current state, assuming the teacher continues from there. Here, we evaluate it along the <em>student’s</em> trajectory.</p><p><span class="critic-v">Blue V</span> uses the observed episode time. <span class="critic-v0">Green V₀</span> sets only that input to zero, retaining the same pose, contacts, action history and all other inputs. Both curves share the same axes; the horizontal axis always shows actual simulation time.</p><p class="secondary">Neither curve is a success probability or the immediate reward. Values are sampled at the 10 Hz control rate; intermediate video frames retain the latest prediction. V₀ is a network prediction with a modified time input, not a newly simulated episode.</p></div><div class="value-formula" aria-label="V uses the observed episode time; V0 sets the episode time input to zero">V(s, t)<br><span>V₀(s) = V(s, 0)</span></div></div>
 </section>
 
 <section class="collection section" id="collection" aria-labelledby="collection-title">
