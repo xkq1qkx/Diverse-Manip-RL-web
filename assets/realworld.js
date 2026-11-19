@@ -31,6 +31,22 @@
     button.addEventListener("click", () => open(clip.id, true, button));
     return button;
   }
+  function updateVisibleRows() {
+    if (!catalog) return;
+    const grid = $("realworld-grid"), cards = [...grid.children];
+    const columns = getComputedStyle(grid).gridTemplateColumns.split(/\s+/).length;
+    const limit = activeGroup === "all" ? columns * 2 : cards.length;
+    cards.forEach((item, index) => { item.hidden = index >= limit; });
+    const visible = Math.min(limit, cards.length);
+    $("realworld-count").textContent = (visible < cards.length ? visible + " OF " : "") + cards.length + " RECORDINGS";
+    $("realworld-status").textContent = (visible < cards.length ? "Showing the first two rows. Choose an object to see all its recordings. " : "")
+      + "Default playback is 2×. Select 1× in the player for original speed. All videos are silent.";
+  }
+  let resizeFrame;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(updateVisibleRows);
+  });
   function filter(group) {
     activeGroup = group;
     const clips = pool();
@@ -40,8 +56,7 @@
     });
     const name = catalog.groups.find((item) => item.id === group)?.name || "All objects";
     $("realworld-group-label").textContent = name.toUpperCase();
-    $("realworld-count").textContent = clips.length + " RECORDINGS";
-    $("realworld-status").textContent = "Default playback is 2×. Select 1× in the player for original speed. All videos are silent.";
+    updateVisibleRows();
   }
   function open(id, autoplay = false, trigger = null) {
     selected = catalog.clips.find((clip) => clip.id === id);

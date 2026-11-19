@@ -2,7 +2,7 @@
 
 **Dr. Grasp-RL: Diverse and Robust Dexterous Grasping via Reinforcement Learning**
 
-The paper edition adds the project film, the three-stage curriculum and distillation
+The paper edition adds the project film, a brief curriculum and distillation
 overview, paper figures, teacher/student success tables, and the closed-loop retry
 breakdown. Content is based on the November 19, 2026 manuscript. Author affiliations
 follow the project owner's clarification: Kunqi Xu and Xueyan Zou are at Tsinghua
@@ -29,6 +29,11 @@ the film pauses those players, and starting another video pauses the film.
 `assets/paper.css` styles the research sections. `assets/research.js` manages the
 resource buttons and film playback coordination. `assets/figures/` contains WebP
 exports of the paper figures. The existing SGS design credit remains visible.
+
+The homepage has four sections: Overview, Results, Real world, and Simulation.
+The project film explains the method. In Results, “See diverse grasps from the
+paper” opens a side-by-side pair of the main-paper and appendix diversity figures;
+click either figure to view its full-resolution image.
 
 English project homepage with 24 silent real-world recordings across five object
 groups, plus 75 paired simulation-rollout and combined teacher V/V0 videos: 48 in 11 unseen-test
@@ -138,6 +143,9 @@ frames, then selects frame N−1 to produce each cover. The web videos copy the
 original H.264 stream without re-encoding, retain rotation and video timing, and
 remove every audio stream. The original camera files remain unchanged.
 
+The All filter shows only the first two rows, adapting to the screen width.
+Selecting an object category shows all recordings in that category. All 24 clips
+remain available through category filters and the player's previous/next controls.
 The gallery loads thumbnail images first. Selecting a recording opens a portrait
 player with native playback, seeking and fullscreen controls, previous/next
 navigation, an MP4 download, and a shareable clip link. Real-world playback defaults
@@ -161,9 +169,9 @@ and Watch. These are examples from the 418-object training set.
 Keep training-object recordings under artifacts/videos_train and test recordings
 under artifacts/videos. The split-specific importer rejects the other kind to
 prevent mixing the collections. The simulator player switches between Test set
-and Training set; the collection overview displays both with explicit labels.
+and Training set, each with explicit labels and category selectors.
 
-Thumbnail cards, collection cards, and both waiting player panes use final-frame
+Thumbnail cards and both waiting player panes use final-frame
 covers. A cover overlay stays visible while the video's first frame preloads;
 Play starts from time zero, while scrubbing shows the requested video frame.
 The new thumb-last.jpg filenames avoid cached first-frame covers from older builds.

@@ -22,9 +22,9 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
   <link rel="canonical" href="https://xkq1qkx.github.io/Diverse-Manip-RL-web/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/site.css?v=20261109-v0">
-  <script src="assets/site.js?v=20261119-overview" defer></script>
-  <script src="assets/realworld.js?v=20261028-speed" defer></script>
-  <link rel="stylesheet" href="assets/paper.css?v=20261119">
+  <script src="assets/site.js?v=20261120-layout" defer></script>
+  <script src="assets/realworld.js?v=20261120-rows" defer></script>
+  <link rel="stylesheet" href="assets/paper.css?v=20261120-layout">
   <script src="assets/research.js?v=20261119" defer></script>
   <meta name="citation_title" content="Dr. Grasp-RL: Diverse and Robust Dexterous Grasping via Reinforcement Learning">
   <meta name="citation_author" content="Kunqi Xu">
@@ -35,7 +35,7 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
 <a class="skip-link" href="#overview">Skip to project overview</a>
 <header class="topbar">
   <a class="wordmark" href="./" aria-label="Dr. Grasp-RL home"><span class="mark" aria-hidden="true">↗</span> DR. GRASP–RL</a>
-  <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#approach">Method</a><a href="#results">Results</a><a href="#realworld">Real world</a><a href="#explore">Simulation</a></nav>
+  <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#results">Results</a><a href="#realworld">Real world</a><a href="#explore">Simulation</a></nav>
 </header>
 <main>
 
@@ -72,21 +72,8 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
   <div class="research-stats"><div><strong>418</strong><span>objects in the final curriculum</span></div><div><strong>20k+</strong><span>object assets in cross-dataset evaluation</span></div><div><strong>10 Hz</strong><span>closed-loop policy control</span></div><div><strong>18</strong><span>wrist and finger action dimensions</span></div></div>
 </section>
 
-<section class="approach section paper-method" id="approach" aria-labelledby="approach-title">
-  <div class="section-heading"><span class="section-number mono">02 / METHOD</span><h2 id="approach-title">Learn backward. Act forward.</h2></div>
-  <div class="statement"><span class="mono">TIME-REVERSED CURRICULUM</span><p>Begin near diverse grasps. Learn to approach them. Then <span>adapt to where the object actually is.</span></p></div>
-  <figure class="paper-figure"><a href="assets/figures/method-overview.webp" target="_blank" rel="noopener" aria-label="Open the full method diagram"><img src="assets/figures/method-overview.webp" width="2400" height="1134" loading="lazy" decoding="async" alt="Dr. Grasp-RL method: near-grasp, open-hand and position-randomized resets train an MLP teacher with PPO, followed by BC and DAgger student distillation."></a><figcaption>Training expands the reset distribution while retaining earlier groups. The teacher learns with PPO; the student learns from teacher supervision. Figure 2 from the paper.</figcaption></figure>
-  <div class="method-grid">
-    <article><span class="mono step-number">STAGE 1 / ACQUIRE</span><h3>Seed multiple grasps.</h3><p>Initialize near feasible grasp configurations derived from Dexonomy templates. Learn contact acquisition, lifting, and holding across distinct wrist poses and finger configurations.</p></article>
-    <article><span class="mono step-number">STAGE 2 / APPROACH</span><h3>Open up. Step back.</h3><p>Progress from 50% open fingers (2A) to fully open, withdrawn starts (2B), then varied approach states (2C). Keep earlier reset groups in the training mixture as difficulty increases.</p></article>
-    <article><span class="mono step-number">STAGE 3 / ADAPT</span><h3>Separate hand and object.</h3><p>Sample robot starts and object positions independently. Expand position variation from 3A to 3B so the policy must respond to the object's current location rather than rely on its initial alignment.</p></article>
-  </div>
-  <div class="distillation-note"><div><span class="mono">TEACHER → STUDENT</span><h3>Bring the feedback policy<br>to the real robot.</h3></div><div><p>Both teacher actor and critic are MLPs with hidden widths 512, 256, and 128. A PointNet-style encoder represents object shape. The student copies and freezes this encoder, then learns through BC and mixed teacher/student DAgger rollouts.</p><p>At deployment, calibrated motion capture supplies object pose; known meshes supply shape features; robot feedback and the four most recent actions complete the student's observations. Simulated tactile readings and physical-property parameters are not required.</p></div></div>
-  <figure class="paper-figure conceptual-figure"><a href="assets/figures/value-landscape.webp" target="_blank" rel="noopener" aria-label="Open the conceptual value landscape"><img src="assets/figures/value-landscape.webp" width="2400" height="676" loading="lazy" decoding="async" alt="Conceptual value landscape illustrating multiple successful grasping modes and closed-loop adjustment between them."></a><figcaption>A conceptual view of diverse high-value grasping modes. This is an illustration, not a measured critic surface; PPO learns feedback actions from advantages rather than explicitly following the state gradient of V.</figcaption></figure>
-</section>
-
 <section class="results section" id="results" aria-labelledby="results-title">
-  <div class="section-heading"><span class="section-number mono">03 / RESULTS</span><h2 id="results-title">Generalize. Adjust. Regrasp.</h2><span class="section-note mono">REPORTED IN THE PAPER</span></div>
+  <div class="section-heading"><span class="section-number mono">02 / RESULTS</span><h2 id="results-title">Generalize. Adjust. Regrasp.</h2><span class="section-note mono">REPORTED IN THE PAPER</span></div>
   <div class="result-heading"><h3>Success on our object split.</h3><p>418 training objects · 5,031 test objects · 10 starts per object</p></div>
   <p class="table-scroll-hint mono">Swipe tables to compare both execution settings ↔</p>
   <div class="result-table-wrap" tabindex="0" role="region" aria-label="Shared object split success rates; scroll horizontally on small screens"><table class="result-table"><caption>Grasping success rate (%) — paper Table 1</caption><thead><tr><th rowspan="2" scope="col">Policy</th><th colspan="2" scope="colgroup">With robot arm</th><th colspan="2" scope="colgroup">Without robot arm</th></tr><tr><th scope="col">Train</th><th scope="col">Test</th><th scope="col">Train</th><th scope="col">Test</th></tr></thead><tbody><tr><th scope="row">Teacher</th><td>97.44</td><td>92.11</td><td>98.92</td><td>93.23</td></tr>
@@ -101,11 +88,24 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
 <tr><th scope="row">VisualDexterity</th><td>96.87</td><td>94.67</td><td>98.67</td><td>98.87</td></tr></tbody></table></div>
   <p class="result-note">Values are reported separately for each asset set and execution setting; no pooled average across overlapping source collections is implied.</p>
   <div class="recovery-panel"><div><span class="mono">CLOSED-LOOP RECOVERY</span><h3><strong>19.4%</strong> of successful student grasps<br> take more than one attempt.</h3><p>Test objects · with robot arm · overall success 88.06%</p></div><div><div class="attempt-bar" role="img" aria-label="Among successful student test episodes with an arm: 80.6 percent first attempt, 10.6 percent second, 4.3 percent third, and 4.5 percent fourth or later."><span style="flex:80.6" class="attempt-one"></span><span style="flex:10.6" class="attempt-two"></span><span style="flex:4.3" class="attempt-three"></span><span style="flex:4.5" class="attempt-four"></span></div><ul class="attempt-legend"><li><i class="attempt-one"></i><span>1st attempt</span><strong>80.6%</strong></li><li><i class="attempt-two"></i><span>2nd attempt</span><strong>10.6%</strong></li><li><i class="attempt-three"></i><span>3rd attempt</span><strong>4.3%</strong></li><li><i class="attempt-four"></i><span>4th or later</span><strong>4.5%</strong></li></ul><p class="result-note">Shares are conditioned on eventual success (paper Table 3). An attempt begins at finger–object contact and ends after 0.3 s without contact. The policy continues from the resulting state, without a scene reset.</p></div></div>
-  <details class="diversity-detail"><summary><span>See diverse grasps from the paper</span><span class="mono">TRAINING + UNSEEN OBJECTS</span></summary><figure class="paper-figure"><a href="assets/figures/grasp-diversity.webp" target="_blank" rel="noopener" aria-label="Open the full grasp diversity figure"><img src="assets/figures/grasp-diversity.webp" width="1578" height="2400" loading="lazy" decoding="async" alt="Different successful wrist orientations and finger configurations on four training and seven unseen objects, with diverse approach states in the last row."></a><figcaption>Multiple grasping modes across four training and seven unseen objects. The final row illustrates varied approaches. Figure 4 from the paper.</figcaption></figure></details>
+  <details class="diversity-detail">
+    <summary><span>See diverse grasps from the paper</span><span class="mono">TRAINING + UNSEEN OBJECTS</span></summary>
+    <div class="diversity-figures">
+      <figure class="paper-figure"><div class="diversity-figure-label mono">MAIN PAPER</div><a href="assets/figures/grasp-diversity.webp" target="_blank" rel="noopener" aria-label="Open the full grasp diversity figure"><img src="assets/figures/grasp-diversity.webp" width="1578" height="2400" loading="lazy" decoding="async" alt="Different successful wrist orientations and finger configurations on four training and seven unseen objects, with diverse approach states in the last row."></a><figcaption>Multiple grasping modes across four training and seven unseen objects. The final row illustrates varied approaches. Figure 4 from the paper.</figcaption></figure>
+      <figure class="paper-figure">
+        <div class="diversity-figure-label mono">APPENDIX</div>
+        <a href="assets/figures/appendix-grasp-diversity.webp" target="_blank" rel="noopener" aria-label="Open the full appendix grasp diversity figure">
+          <img src="assets/figures/appendix-grasp-diversity.webp" width="2474" height="3200" loading="lazy" decoding="async" alt="Appendix gallery of diverse successful grasps: training objects on the left and unseen objects on the right, with multiple wrist poses and finger configurations for each object.">
+        </a>
+        <figcaption>More grasping modes on training objects (left) and unseen objects (right). Successful trajectories are shown at the first recorded lift of at least 1 cm, with the arm and ground hidden. From the appendix.</figcaption>
+      </figure>
+    </div>
+    <p class="diversity-zoom-note mono">CLICK EITHER FIGURE TO VIEW FULL SIZE ↗</p>
+  </details>
 </section>
 
 <section class="realworld section" id="realworld" aria-labelledby="realworld-title">
-  <div class="section-heading"><span class="section-number mono">04 / REAL WORLD</span><h2 id="realworld-title">From simulation to the lab.</h2><span class="section-note mono"><span data-realworld-count>24</span> VIDEOS · 2× BY DEFAULT</span></div>
+  <div class="section-heading"><span class="section-number mono">03 / REAL WORLD</span><h2 id="realworld-title">From simulation to the lab.</h2><span class="section-note mono"><span data-realworld-count>24</span> VIDEOS · 2× BY DEFAULT</span></div>
   <div class="realworld-intro"><p>Student policy deployments on the real robot.</p><p>Choose an object, then open a recording. Every cover shows the video's final frame.</p></div>
   <div id="realworld-filters" class="realworld-filters" role="group" aria-label="Filter real-world recordings by object"></div>
   <div class="realworld-count mono"><span id="realworld-group-label">ALL OBJECTS</span><span id="realworld-count">24 RECORDINGS</span></div>
@@ -134,7 +134,7 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
 </dialog>
 
 <section class="explore section" id="explore" aria-labelledby="explore-title">
-  <div class="section-heading"><span class="section-number mono">05 / SIMULATION</span><h2 id="explore-title">Grasping unseen objects.</h2><span class="section-note mono">PAIRED VIDEO · 1× BY DEFAULT</span></div>
+  <div class="section-heading"><span class="section-number mono">04 / SIMULATION</span><h2 id="explore-title">Grasping unseen objects.</h2><span class="section-note mono">PAIRED VIDEO · 1× BY DEFAULT</span></div>
   <div id="split-tabs" class="split-tabs" role="group" aria-label="Select test or training objects">
     <button type="button" data-split="test" aria-pressed="true"><span>Test set</span><small>UNSEEN OBJECTS · <span data-test-clip-count>48</span> ROLLOUTS</small></button>
     <button type="button" data-split="train" aria-pressed="false"><span>Training set</span><small>SEEN OBJECTS · <span data-train-clip-count>27</span> ROLLOUTS</small></button>
@@ -176,13 +176,6 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
   <div class="critic-note"><div><span class="mono">READING THE CRITIC</span><h3>One state.<br>Two time inputs.</h3></div><div><p>The teacher critic estimates discounted return from the current state, assuming the teacher continues from there. Here, we evaluate it along the <em>student’s</em> trajectory.</p><p><span class="critic-v">Blue V</span> uses the observed episode time. <span class="critic-v0">Green V₀</span> sets only that input to zero, retaining the same pose, contacts, action history and all other inputs. Both curves share the same axes; the horizontal axis always shows actual simulation time.</p><p class="secondary">Neither curve is a success probability or the immediate reward. Values are sampled at the 10 Hz control rate; intermediate video frames retain the latest prediction. V₀ is a network prediction with a modified time input, not a newly simulated episode.</p></div><div class="value-formula" aria-label="V uses the observed episode time; V0 sets the episode time input to zero">V(s, t)<br><span>V₀(s) = V(s, 0)</span></div></div>
 </section>
 
-<section class="collection section" id="collection" aria-labelledby="collection-title">
-  <div class="section-heading"><span class="section-number mono">06 / SIMULATION COLLECTION</span><h2 id="collection-title">Test objects. Training objects.</h2><span class="section-note mono"><span data-clip-count>75</span> ROLLOUTS</span></div>
-  <div class="collection-split-heading"><h3>Test set <span>Unseen objects</span></h3><span class="mono"><span data-test-category-count>11</span> CATEGORIES · <span data-test-clip-count>48</span> ROLLOUTS</span></div>
-  <div id="object-grid" class="object-grid"></div>
-  <div class="collection-split-heading"><h3>Training set <span>Seen objects</span></h3><span class="mono"><span data-train-category-count>9</span> CATEGORIES · <span data-train-clip-count>27</span> ROLLOUTS</span></div>
-  <div id="train-object-grid" class="object-grid"></div>
-</section>
 </main>
 <footer id="credits">
   <div class="footer-title"><a href="#page-title">Dr.<br>Grasp-RL<span>↗</span></a><div><span class="mono">DEXTEROUS MANIPULATION</span><p>Many ways to grasp.<br>One policy.</p><a href="https://github.com/xkq1qkx/Diverse-Manip-RL-web">Website source ↗</a></div></div>

@@ -134,3 +134,16 @@
 
 .table-scroll-hint{display:none}
 @media(max-width:700px){.table-scroll-hint{display:block;color:var(--muted);font-size:9px;margin:0 0 12px;line-height:1.6}}
+
+/* Paired paper figures stay in one row; full-size images open on click. */
+.diversity-figures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+.diversity-detail .diversity-figures .paper-figure{max-width:none;min-width:0;margin:0}
+.diversity-figure-label{padding:14px 18px;border-bottom:1px solid var(--rule);font-size:11px;color:var(--muted)}
+.diversity-zoom-note{margin:16px 0 24px;font-size:10px;color:var(--muted)}
+.realworld-card[hidden]{display:none}
+@media(max-width:700px){
+  .diversity-figures{gap:10px}
+  .diversity-figure-label{padding:10px 8px;font-size:9px}
+  .diversity-figures .paper-figure figcaption{padding:10px 8px}
+  .diversity-zoom-note{font-size:9px}
+}

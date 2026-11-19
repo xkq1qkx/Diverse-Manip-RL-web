@@ -218,6 +218,7 @@
   }
   function renderCollection(key) {
     const data = catalogs[key], grid = $(key === "test" ? "object-grid" : "train-object-grid");
+    if (!grid) return;
     const label = key === "test" ? "Unseen test objects" : "Training-set objects";
     for (const [index, obj] of data.objects.entries()) {
       const card = document.createElement("button"); card.className = "object-card"; card.type = "button";
