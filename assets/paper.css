@@ -141,7 +141,17 @@
 .diversity-figure-label{padding:14px 18px;border-bottom:1px solid var(--rule);font-size:11px;color:var(--muted)}
 .diversity-zoom-note{margin:16px 0 24px;font-size:10px;color:var(--muted)}
 .realworld-card[hidden]{display:none}
+.realworld-expand{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:20px;padding:24px;background:var(--ink);color:var(--paper);border-color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s}
+.realworld-expand:hover{background:var(--red);border-color:var(--red)}
+.rw-expand-icon{font-size:48px;line-height:1}
+.rw-expand-title{font-size:28px;line-height:1.1;letter-spacing:-.04em}
+.rw-expand-meta{font-size:10px;line-height:1.5}
+.realworld-collapse{margin-top:18px;padding:12px 18px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.realworld-collapse:hover{background:var(--ink);color:var(--paper)}
+.realworld-collapse[hidden]{display:none}
 @media(max-width:700px){
+  .realworld-expand{padding:18px}
+  .rw-expand-title{font-size:25px}
   .diversity-figures{gap:10px}
   .diversity-figure-label{padding:10px 8px;font-size:9px}
   .diversity-figures .paper-figure figcaption{padding:10px 8px}

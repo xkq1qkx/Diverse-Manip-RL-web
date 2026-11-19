@@ -143,7 +143,10 @@ frames, then selects frame N−1 to produce each cover. The web videos copy the
 original H.264 stream without re-encoding, retain rotation and video timing, and
 remove every audio stream. The original camera files remain unchanged.
 
-The All filter shows only the first two rows, adapting to the screen width.
+The All filter initially shows two rows, adapting to the screen width. The last
+slot is a "Show all videos" button (11 videos + the button on a six-column screen).
+Click it to reveal all 24 recordings; "Show fewer videos" collapses the gallery.
+Changing object categories resets the All view to its collapsed state.
 Selecting an object category shows all recordings in that category. All 24 clips
 remain available through category filters and the player's previous/next controls.
 The gallery loads thumbnail images first. Selecting a recording opens a portrait

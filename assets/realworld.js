@@ -8,10 +8,28 @@
   const speedControl = $("realworld-speed");
   let playbackSpeed = 2;
   let catalog, activeGroup = "all", selected, previousFocus, generation = 0;
+  let allExpanded = false;
   const pad = (n) => String(n).padStart(2, "0");
   const clock = (seconds) => Math.floor(seconds / 60) + ":" + pad(Math.floor(seconds) % 60);
   const pool = () => catalog.clips.filter((clip) => activeGroup === "all" || clip.group === activeGroup);
   const status = (message) => { $("realworld-video-status").textContent = message; };
+  const expandButton = document.createElement("button");
+  expandButton.type = "button";
+  expandButton.className = "realworld-card realworld-expand";
+  expandButton.setAttribute("aria-controls", "realworld-grid");
+  expandButton.innerHTML = '<span class="rw-expand-icon" aria-hidden="true">↗</span><span class="rw-expand-title">Show all<br>videos</span><span class="rw-expand-meta mono"></span>';
+  expandButton.addEventListener("click", () => {
+    const firstHidden = $("realworld-grid").querySelector("[data-clip][hidden]");
+    allExpanded = true;
+    updateVisibleRows();
+    firstHidden?.focus({preventScroll: true});
+  });
+  $("realworld-collapse").addEventListener("click", () => {
+    allExpanded = false;
+    updateVisibleRows();
+    expandButton.focus({preventScroll: true});
+    expandButton.scrollIntoView({block: "nearest", behavior: "instant"});
+  });
 
   function card(clip) {
     const button = document.createElement("button");
@@ -33,13 +51,21 @@
   }
   function updateVisibleRows() {
     if (!catalog) return;
-    const grid = $("realworld-grid"), cards = [...grid.children];
+    const grid = $("realworld-grid"), cards = [...grid.querySelectorAll("[data-clip]")];
     const columns = getComputedStyle(grid).gridTemplateColumns.split(/\s+/).length;
-    const limit = activeGroup === "all" ? columns * 2 : cards.length;
+    const expandable = activeGroup === "all" && cards.length > columns * 2;
+    const collapsed = expandable && !allExpanded;
+    const limit = collapsed ? columns * 2 - 1 : cards.length;
     cards.forEach((item, index) => { item.hidden = index >= limit; });
+    expandButton.hidden = !collapsed;
+    expandButton.setAttribute("aria-expanded", String(allExpanded));
+    expandButton.setAttribute("aria-label", "Show all " + cards.length + " videos");
+    expandButton.querySelector(".rw-expand-meta").textContent = (cards.length - limit) + " MORE RECORDINGS";
+    $("realworld-collapse").hidden = !(expandable && allExpanded);
+    $("realworld-collapse").setAttribute("aria-expanded", String(allExpanded));
     const visible = Math.min(limit, cards.length);
     $("realworld-count").textContent = (visible < cards.length ? visible + " OF " : "") + cards.length + " RECORDINGS";
-    $("realworld-status").textContent = (visible < cards.length ? "Showing the first two rows. Choose an object to see all its recordings. " : "")
+    $("realworld-status").textContent = (collapsed ? "Select Show all videos to expand the gallery, or choose an object. " : "")
       + "Default playback is 2×. Select 1× in the player for original speed. All videos are silent.";
   }
   let resizeFrame;
@@ -49,8 +75,9 @@
   });
   function filter(group) {
     activeGroup = group;
+    allExpanded = false;
     const clips = pool();
-    $("realworld-grid").replaceChildren(...clips.map(card));
+    $("realworld-grid").replaceChildren(...clips.map(card), expandButton);
     $("realworld-filters").querySelectorAll("button").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.group === group));
     });
