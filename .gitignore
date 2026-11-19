@@ -4,3 +4,7 @@ __pycache__/
 
 # Local camera originals; serve only silent prepared MP4s.
 /media/Realworld_Demo/
+
+# Local source bundles are not part of the public website.
+/media.zip
+/media/Realworld_Demo.zip

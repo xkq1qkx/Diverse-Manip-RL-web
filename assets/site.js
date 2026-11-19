@@ -142,6 +142,7 @@
   }
   requestAnimationFrame(synchronize);
   window.addEventListener("realworld-open", () => pause("Paused while a real-world recording is open"));
+  window.addEventListener("overview-play", () => pause("Paused while the project film is playing"));
   document.addEventListener("visibilitychange", () => {
     if (document.hidden && wanted) pause("Paused while the page is in the background");
   });

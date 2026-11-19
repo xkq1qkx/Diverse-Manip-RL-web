@@ -1,4 +1,34 @@
-# Diverse-Manip-RL project website
+# Dr. Grasp-RL project website
+
+**Dr. Grasp-RL: Diverse and Robust Dexterous Grasping via Reinforcement Learning**
+
+The paper edition adds the project film, the three-stage curriculum and distillation
+overview, paper figures, teacher/student success tables, and the closed-loop retry
+breakdown. Content is based on the November 19, 2026 manuscript. Author affiliations
+follow the project owner's clarification: Kunqi Xu and Xueyan Zou are at Tsinghua
+University; Xiaokang Sun is affiliated with both Tsinghua University and Georgia
+Institute of Technology.
+
+## Paper, code, and live demo buttons
+
+Edit `assets/resources.json` to set `paper`, `code`, and `demo` URLs. All three are
+intentionally empty until the resources are ready. Empty destinations display
+"Coming soon" without navigating or jumping to the top of the page. Adding an
+HTTP(S) destination enables that button. No paper PDF or model files are published
+by this website update.
+
+## Project film
+
+`media/overview/dr-grasp-rl.mp4` is the supplied 2:38 introduction, remuxed from MOV
+without re-encoding the H.264 video or AAC audio. It preserves the film's sound,
+uses MP4 faststart, and plays only after a user gesture. Its poster is the opening
+title card because the movie ends with a black frame. This is separate from the
+final-frame covers of the silent real-world and simulation galleries. Starting
+the film pauses those players, and starting another video pauses the film.
+
+`assets/paper.css` styles the research sections. `assets/research.js` manages the
+resource buttons and film playback coordination. `assets/figures/` contains WebP
+exports of the paper figures. The existing SGS design credit remains visible.
 
 English project homepage with 24 silent real-world recordings across five object
 groups, plus 75 paired simulation-rollout and combined teacher V/V0 videos: 48 in 11 unseen-test

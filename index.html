@@ -12,45 +12,100 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ee402a">
-  <title>Diverse-Manip-RL — Many ways to grasp. One policy.</title>
-  <meta name="description" content="Diverse dexterous grasping through reset-state curricula and reinforcement learning. Explore real-world student deployments and simulation rollouts on test and training objects with synchronized teacher critic predictions.">
-  <meta property="og:title" content="Diverse-Manip-RL">
-  <meta property="og:description" content="Many ways to grasp. One policy. Explore dexterous manipulation in simulation and on the real robot.">
+  <title>Dr. Grasp-RL: Diverse and Robust Dexterous Grasping via Reinforcement Learning</title>
+  <meta name="description" content="A single MLP policy learns diverse, robust dexterous grasping with PPO, a time-reversed reset curriculum, and teacher–student distillation. Explore the paper, project film, results, and real-world demonstrations.">
+  <meta property="og:title" content="Dr. Grasp-RL: Diverse and Robust Dexterous Grasping via Reinforcement Learning">
+  <meta property="og:description" content="Diverse grasping. Closed-loop recovery. One MLP policy trained with reinforcement learning.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xkq1qkx.github.io/Diverse-Manip-RL-web/">
-  <meta property="og:image" content="https://xkq1qkx.github.io/Diverse-Manip-RL-web/assets/social.jpg">
+  <meta property="og:image" content="https://xkq1qkx.github.io/Diverse-Manip-RL-web/assets/social-20261119.jpg">
   <link rel="canonical" href="https://xkq1qkx.github.io/Diverse-Manip-RL-web/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/site.css?v=20261109-v0">
-  <script src="assets/site.js?v=20261109-v0" defer></script>
+  <script src="assets/site.js?v=20261119-overview" defer></script>
   <script src="assets/realworld.js?v=20261028-speed" defer></script>
+  <link rel="stylesheet" href="assets/paper.css?v=20261119">
+  <script src="assets/research.js?v=20261119" defer></script>
+  <meta name="citation_title" content="Dr. Grasp-RL: Diverse and Robust Dexterous Grasping via Reinforcement Learning">
+  <meta name="citation_author" content="Kunqi Xu">
+  <meta name="citation_author" content="Xiaokang Sun">
+  <meta name="citation_author" content="Xueyan Zou">
 </head>
 <body>
-<a class="skip-link" href="#realworld">Skip to real-world videos</a>
+<a class="skip-link" href="#overview">Skip to project overview</a>
 <header class="topbar">
-  <a class="wordmark" href="./" aria-label="Diverse-Manip-RL home"><span class="mark" aria-hidden="true">↗</span> DIVERSE–MANIP–RL</a>
-  <nav aria-label="Main navigation">
-    <a href="#realworld">Real world</a><a href="#explore">Simulation</a><a href="#approach">Approach</a><a href="#collection">Collection</a>
-    <a class="source-link" href="https://github.com/xkq1qkx/Diverse-Manip-RL-web">GitHub ↗</a>
-  </nav>
+  <a class="wordmark" href="./" aria-label="Dr. Grasp-RL home"><span class="mark" aria-hidden="true">↗</span> DR. GRASP–RL</a>
+  <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#approach">Method</a><a href="#results">Results</a><a href="#realworld">Real world</a><a href="#explore">Simulation</a></nav>
 </header>
 <main>
-<section class="hero" aria-labelledby="page-title">
-  <div class="hero-kicker mono"><span>DEXTEROUS MANIPULATION / REINFORCEMENT LEARNING</span><span>RESEARCH IN PROGRESS · 2026</span></div>
+
+<section class="hero paper-hero" aria-labelledby="page-title">
+  <div class="hero-kicker mono"><span>DEXTEROUS GRASPING / REINFORCEMENT LEARNING</span><span>TSINGHUA UNIVERSITY · GEORGIA TECH</span></div>
   <div class="hero-grid">
-    <h1 id="page-title"><span>Many ways</span><span>to grasp.</span><span class="accent">One policy.</span></h1>
+    <div>
+      <h1 id="page-title"><span class="project-name">Dr. Grasp-RL<span class="title-period">.</span></span><span class="paper-subtitle"><em>Diverse and Robust</em> Dexterous Grasping via Reinforcement Learning</span></h1>
+      <p class="authors">Kunqi Xu<sup>1</sup> <span>·</span> Xiaokang Sun<sup>1,2</sup> <span>·</span> Xueyan Zou<sup>1</sup></p>
+      <p class="affiliation"><span><sup>1</sup> Tsinghua University — IEI Lab</span><span><sup>2</sup> Georgia Institute of Technology</span></p>
+    </div>
     <div class="hero-aside">
-      <div class="hero-symbol" aria-hidden="true">↗</div>
-      <p>Learning dexterous grasping from diverse starting states.</p>
-      <p class="hero-description">Explore the trained student in simulation and on the real robot: approaching, grasping, and lifting.</p>
-      <a class="hero-cta" href="#realworld">Watch the real robot <span aria-hidden="true">↓</span></a>
+      <span class="mono hero-tag">SIMPLE POLICY. DIVERSE BEHAVIORS.</span>
+      <p>Many ways to grasp.<br> One feedback policy.</p>
+      <p class="hero-description">A time-reversed curriculum lets MLP-based PPO learn multiple grasping modes and recover from failed interactions.</p>
+      <a class="hero-cta" href="#overview">Watch the project film <span aria-hidden="true">↘</span></a>
     </div>
   </div>
-  <div class="hero-bottom mono"><span>SIMULATION → REAL WORLD</span><span><span data-realworld-count>24</span> REAL VIDEOS <span class="slash">/</span> <span data-clip-count>75</span> SIM ROLLOUTS</span></div>
+  <div class="resource-links" role="group" aria-label="Project resources">
+    <a class="resource-link" role="link" tabindex="0" aria-disabled="true" data-resource="paper" aria-label="Paper — coming soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6"/></svg><span>Paper<small>Coming soon</small></span><span class="resource-arrow" aria-hidden="true">↗</span></a>
+    <a class="resource-link" role="link" tabindex="0" aria-disabled="true" data-resource="code" aria-label="Code — coming soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 3l-4 18"/></svg><span>Code<small>Coming soon</small></span><span class="resource-arrow" aria-hidden="true">↗</span></a>
+    <a class="resource-link" role="link" tabindex="0" aria-disabled="true" data-resource="demo" aria-label="Hugging Face Live Demo — coming soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="m10 8 6 3-6 3zM7 22h10M12 18v4"/></svg><span>Hugging Face Live Demo<small>Coming soon</small></span><span class="resource-arrow" aria-hidden="true">↗</span></a>
+  </div>
+  <div class="hero-bottom mono"><span>MLP + PPO <span class="slash">/</span> CLOSED-LOOP CONTROL</span><span><span data-realworld-count>24</span> REAL VIDEOS <span class="slash">/</span> <span data-clip-count>75</span> SIM ROLLOUTS</span></div>
+</section>
+
+<section class="overview section" id="overview" aria-labelledby="overview-title">
+  <div class="section-heading"><span class="section-number mono">01 / OVERVIEW</span><h2 id="overview-title">Diversity meets feedback.</h2><span class="section-note mono">PROJECT FILM · 02:38</span></div>
+  <figure class="project-film">
+    <video id="overview-video" controls playsinline preload="none" poster="media/overview/poster.jpg" aria-label="Dr. Grasp-RL project introduction with sound"><source src="media/overview/dr-grasp-rl.mp4" type="video/mp4">Your browser does not support embedded video. <a href="media/overview/dr-grasp-rl.mp4">Download the project film.</a></video>
+    <figcaption><span>From diverse resets to adaptive grasping in the real world.</span><span>Click to play with sound <span aria-hidden="true">·</span> <a href="media/overview/dr-grasp-rl.mp4" download>Download film ↗</a></span></figcaption>
+  </figure>
+  <div class="overview-copy"><span class="mono">THE IDEA</span><div><p class="overview-lead">A single policy can learn <em>many effective grasps</em> and use feedback to adapt when an interaction goes wrong.</p><p>Dr. Grasp-RL starts reinforcement learning near diverse feasible grasps, then progressively moves initialization backward: opening the fingers, extending the approach, and varying the object's position independently. This coordinated reset curriculum exposes a simple MLP actor–critic to multiple successful behaviors using PPO and a lift-height reward.</p><p>The trained teacher is distilled with behavior cloning and DAgger into a student that uses object pose, known mesh geometry, robot feedback, and action history. No grasp-pose generator is required at execution time.</p></div></div>
+  <div class="research-stats"><div><strong>418</strong><span>objects in the final curriculum</span></div><div><strong>20k+</strong><span>object assets in cross-dataset evaluation</span></div><div><strong>10 Hz</strong><span>closed-loop policy control</span></div><div><strong>18</strong><span>wrist and finger action dimensions</span></div></div>
+</section>
+
+<section class="approach section paper-method" id="approach" aria-labelledby="approach-title">
+  <div class="section-heading"><span class="section-number mono">02 / METHOD</span><h2 id="approach-title">Learn backward. Act forward.</h2></div>
+  <div class="statement"><span class="mono">TIME-REVERSED CURRICULUM</span><p>Begin near diverse grasps. Learn to approach them. Then <span>adapt to where the object actually is.</span></p></div>
+  <figure class="paper-figure"><a href="assets/figures/method-overview.webp" target="_blank" rel="noopener" aria-label="Open the full method diagram"><img src="assets/figures/method-overview.webp" width="2400" height="1134" loading="lazy" decoding="async" alt="Dr. Grasp-RL method: near-grasp, open-hand and position-randomized resets train an MLP teacher with PPO, followed by BC and DAgger student distillation."></a><figcaption>Training expands the reset distribution while retaining earlier groups. The teacher learns with PPO; the student learns from teacher supervision. Figure 2 from the paper.</figcaption></figure>
+  <div class="method-grid">
+    <article><span class="mono step-number">STAGE 1 / ACQUIRE</span><h3>Seed multiple grasps.</h3><p>Initialize near feasible grasp configurations derived from Dexonomy templates. Learn contact acquisition, lifting, and holding across distinct wrist poses and finger configurations.</p></article>
+    <article><span class="mono step-number">STAGE 2 / APPROACH</span><h3>Open up. Step back.</h3><p>Progress from 50% open fingers (2A) to fully open, withdrawn starts (2B), then varied approach states (2C). Keep earlier reset groups in the training mixture as difficulty increases.</p></article>
+    <article><span class="mono step-number">STAGE 3 / ADAPT</span><h3>Separate hand and object.</h3><p>Sample robot starts and object positions independently. Expand position variation from 3A to 3B so the policy must respond to the object's current location rather than rely on its initial alignment.</p></article>
+  </div>
+  <div class="distillation-note"><div><span class="mono">TEACHER → STUDENT</span><h3>Bring the feedback policy<br>to the real robot.</h3></div><div><p>Both teacher actor and critic are MLPs with hidden widths 512, 256, and 128. A PointNet-style encoder represents object shape. The student copies and freezes this encoder, then learns through BC and mixed teacher/student DAgger rollouts.</p><p>At deployment, calibrated motion capture supplies object pose; known meshes supply shape features; robot feedback and the four most recent actions complete the student's observations. Simulated tactile readings and physical-property parameters are not required.</p></div></div>
+  <figure class="paper-figure conceptual-figure"><a href="assets/figures/value-landscape.webp" target="_blank" rel="noopener" aria-label="Open the conceptual value landscape"><img src="assets/figures/value-landscape.webp" width="2400" height="676" loading="lazy" decoding="async" alt="Conceptual value landscape illustrating multiple successful grasping modes and closed-loop adjustment between them."></a><figcaption>A conceptual view of diverse high-value grasping modes. This is an illustration, not a measured critic surface; PPO learns feedback actions from advantages rather than explicitly following the state gradient of V.</figcaption></figure>
+</section>
+
+<section class="results section" id="results" aria-labelledby="results-title">
+  <div class="section-heading"><span class="section-number mono">03 / RESULTS</span><h2 id="results-title">Generalize. Adjust. Regrasp.</h2><span class="section-note mono">REPORTED IN THE PAPER</span></div>
+  <div class="result-heading"><h3>Success on our object split.</h3><p>418 training objects · 5,031 test objects · 10 starts per object</p></div>
+  <p class="table-scroll-hint mono">Swipe tables to compare both execution settings ↔</p>
+  <div class="result-table-wrap" tabindex="0" role="region" aria-label="Shared object split success rates; scroll horizontally on small screens"><table class="result-table"><caption>Grasping success rate (%) — paper Table 1</caption><thead><tr><th rowspan="2" scope="col">Policy</th><th colspan="2" scope="colgroup">With robot arm</th><th colspan="2" scope="colgroup">Without robot arm</th></tr><tr><th scope="col">Train</th><th scope="col">Test</th><th scope="col">Train</th><th scope="col">Test</th></tr></thead><tbody><tr><th scope="row">Teacher</th><td>97.44</td><td>92.11</td><td>98.92</td><td>93.23</td></tr>
+<tr><th scope="row">Student</th><td>95.74</td><td>88.06</td><td>97.82</td><td>91.87</td></tr></tbody></table></div>
+  <p class="result-note">Success requires an object center-of-mass rise of at least 18 cm, held for more than 2 s within a 20 s episode. Arm-mounted trials also count IK failures and forbidden robot collisions as failures.</p>
+  <div class="result-heading transfer-heading"><h3>Transfer across six asset sets.</h3><p>Teacher and student evaluated without fine-tuning.</p></div>
+  <div class="result-table-wrap" tabindex="0" role="region" aria-label="Cross-dataset success rates; scroll horizontally on small screens"><table class="result-table transfer-table"><caption>Grasping success rate (%) — paper Table 2</caption><thead><tr><th rowspan="2" scope="col">Object asset set</th><th colspan="2" scope="colgroup">With robot arm</th><th colspan="2" scope="colgroup">Without robot arm</th></tr><tr><th scope="col">Teacher</th><th scope="col">Student</th><th scope="col">Teacher</th><th scope="col">Student</th></tr></thead><tbody><tr><th scope="row">DexGraspNet</th><td>92.52</td><td>88.65</td><td>93.67</td><td>92.33</td></tr>
+<tr><th scope="row">Objaverse</th><td>93.09</td><td>88.42</td><td>95.56</td><td>94.91</td></tr>
+<tr><th scope="row">YCB</th><td>83.01</td><td>70.27</td><td>89.04</td><td>89.18</td></tr>
+<tr><th scope="row">DGA</th><td>88.21</td><td>81.74</td><td>90.66</td><td>89.06</td></tr>
+<tr><th scope="row">EGAD</th><td>96.18</td><td>94.69</td><td>97.67</td><td>97.45</td></tr>
+<tr><th scope="row">VisualDexterity</th><td>96.87</td><td>94.67</td><td>98.67</td><td>98.87</td></tr></tbody></table></div>
+  <p class="result-note">Values are reported separately for each asset set and execution setting; no pooled average across overlapping source collections is implied.</p>
+  <div class="recovery-panel"><div><span class="mono">CLOSED-LOOP RECOVERY</span><h3><strong>19.4%</strong> of successful student grasps<br> take more than one attempt.</h3><p>Test objects · with robot arm · overall success 88.06%</p></div><div><div class="attempt-bar" role="img" aria-label="Among successful student test episodes with an arm: 80.6 percent first attempt, 10.6 percent second, 4.3 percent third, and 4.5 percent fourth or later."><span style="flex:80.6" class="attempt-one"></span><span style="flex:10.6" class="attempt-two"></span><span style="flex:4.3" class="attempt-three"></span><span style="flex:4.5" class="attempt-four"></span></div><ul class="attempt-legend"><li><i class="attempt-one"></i><span>1st attempt</span><strong>80.6%</strong></li><li><i class="attempt-two"></i><span>2nd attempt</span><strong>10.6%</strong></li><li><i class="attempt-three"></i><span>3rd attempt</span><strong>4.3%</strong></li><li><i class="attempt-four"></i><span>4th or later</span><strong>4.5%</strong></li></ul><p class="result-note">Shares are conditioned on eventual success (paper Table 3). An attempt begins at finger–object contact and ends after 0.3 s without contact. The policy continues from the resulting state, without a scene reset.</p></div></div>
+  <details class="diversity-detail"><summary><span>See diverse grasps from the paper</span><span class="mono">TRAINING + UNSEEN OBJECTS</span></summary><figure class="paper-figure"><a href="assets/figures/grasp-diversity.webp" target="_blank" rel="noopener" aria-label="Open the full grasp diversity figure"><img src="assets/figures/grasp-diversity.webp" width="1578" height="2400" loading="lazy" decoding="async" alt="Different successful wrist orientations and finger configurations on four training and seven unseen objects, with diverse approach states in the last row."></a><figcaption>Multiple grasping modes across four training and seven unseen objects. The final row illustrates varied approaches. Figure 4 from the paper.</figcaption></figure></details>
 </section>
 
 <section class="realworld section" id="realworld" aria-labelledby="realworld-title">
-  <div class="section-heading"><span class="section-number mono">01 / REAL WORLD</span><h2 id="realworld-title">From simulation to the lab.</h2><span class="section-note mono"><span data-realworld-count>24</span> VIDEOS · 2× BY DEFAULT</span></div>
+  <div class="section-heading"><span class="section-number mono">04 / REAL WORLD</span><h2 id="realworld-title">From simulation to the lab.</h2><span class="section-note mono"><span data-realworld-count>24</span> VIDEOS · 2× BY DEFAULT</span></div>
   <div class="realworld-intro"><p>Student policy deployments on the real robot.</p><p>Choose an object, then open a recording. Every cover shows the video's final frame.</p></div>
   <div id="realworld-filters" class="realworld-filters" role="group" aria-label="Filter real-world recordings by object"></div>
   <div class="realworld-count mono"><span id="realworld-group-label">ALL OBJECTS</span><span id="realworld-count">24 RECORDINGS</span></div>
@@ -79,7 +134,7 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
 </dialog>
 
 <section class="explore section" id="explore" aria-labelledby="explore-title">
-  <div class="section-heading"><span class="section-number mono">02 / SIMULATION</span><h2 id="explore-title">Grasping unseen objects.</h2><span class="section-note mono">PAIRED VIDEO · 1× BY DEFAULT</span></div>
+  <div class="section-heading"><span class="section-number mono">05 / SIMULATION</span><h2 id="explore-title">Grasping unseen objects.</h2><span class="section-note mono">PAIRED VIDEO · 1× BY DEFAULT</span></div>
   <div id="split-tabs" class="split-tabs" role="group" aria-label="Select test or training objects">
     <button type="button" data-split="test" aria-pressed="true"><span>Test set</span><small>UNSEEN OBJECTS · <span data-test-clip-count>48</span> ROLLOUTS</small></button>
     <button type="button" data-split="train" aria-pressed="false"><span>Training set</span><small>SEEN OBJECTS · <span data-train-clip-count>27</span> ROLLOUTS</small></button>
@@ -117,19 +172,12 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
   <noscript><p>Enable JavaScript to select and synchronize videos. You can also <a href="media/catalog.json">browse the video catalog</a>.</p></noscript>
 </section>
 
-<section class="approach section" id="approach" aria-labelledby="approach-title">
-  <div class="section-heading"><span class="section-number mono">03 / APPROACH</span><h2 id="approach-title">Diversity starts at reset.</h2></div>
-  <div class="statement"><span class="mono">THE IDEA</span><p>Give reinforcement learning many feasible places to begin. Then extend the task from <span>grasping nearby</span> to <span>reaching from afar.</span></p></div>
-  <div class="method-grid">
-    <article><span class="mono step-number">01</span><h3>Seed the possibilities.</h3><p>Optimize candidate grasps and filter for reachability and collision constraints. Use these states to expose a single policy to a variety of grasp configurations.</p></article>
-    <article><span class="mono step-number">02</span><h3>Expand the starting states.</h3><p>Open the fingers, move the hand farther from the object, and randomize object position. Retain earlier settings as the curriculum becomes harder.</p></article>
-    <article><span class="mono step-number">03</span><h3>Distill the controller.</h3><p>Train a student with behavior cloning and DAgger. Its inputs combine object pose, mesh features, hand state, and recent actions.</p></article>
-  </div>
+<section class="section critic-section" aria-label="Understanding the teacher critic">
   <div class="critic-note"><div><span class="mono">READING THE CRITIC</span><h3>One state.<br>Two time inputs.</h3></div><div><p>The teacher critic estimates discounted return from the current state, assuming the teacher continues from there. Here, we evaluate it along the <em>student’s</em> trajectory.</p><p><span class="critic-v">Blue V</span> uses the observed episode time. <span class="critic-v0">Green V₀</span> sets only that input to zero, retaining the same pose, contacts, action history and all other inputs. Both curves share the same axes; the horizontal axis always shows actual simulation time.</p><p class="secondary">Neither curve is a success probability or the immediate reward. Values are sampled at the 10 Hz control rate; intermediate video frames retain the latest prediction. V₀ is a network prediction with a modified time input, not a newly simulated episode.</p></div><div class="value-formula" aria-label="V uses the observed episode time; V0 sets the episode time input to zero">V(s, t)<br><span>V₀(s) = V(s, 0)</span></div></div>
 </section>
 
 <section class="collection section" id="collection" aria-labelledby="collection-title">
-  <div class="section-heading"><span class="section-number mono">04 / SIMULATION COLLECTION</span><h2 id="collection-title">Test objects. Training objects.</h2><span class="section-note mono"><span data-clip-count>75</span> ROLLOUTS</span></div>
+  <div class="section-heading"><span class="section-number mono">06 / SIMULATION COLLECTION</span><h2 id="collection-title">Test objects. Training objects.</h2><span class="section-note mono"><span data-clip-count>75</span> ROLLOUTS</span></div>
   <div class="collection-split-heading"><h3>Test set <span>Unseen objects</span></h3><span class="mono"><span data-test-category-count>11</span> CATEGORIES · <span data-test-clip-count>48</span> ROLLOUTS</span></div>
   <div id="object-grid" class="object-grid"></div>
   <div class="collection-split-heading"><h3>Training set <span>Seen objects</span></h3><span class="mono"><span data-train-category-count>9</span> CATEGORIES · <span data-train-clip-count>27</span> ROLLOUTS</span></div>
@@ -137,8 +185,8 @@ Swiss / International Typographic Style; additional inspiration acknowledged: ht
 </section>
 </main>
 <footer id="credits">
-  <div class="footer-title"><a href="#page-title">Diverse–<br>Manip–RL<span>↗</span></a><div><span class="mono">DEXTEROUS MANIPULATION</span><p>Many ways to grasp.<br>One policy.</p><a href="https://github.com/xkq1qkx/Diverse-Manip-RL-web">Website source ↗</a></div></div>
-  <div class="credits-grid"><span class="mono">DESIGN & ATTRIBUTION</span><p>Design inspired by <a href="https://sgs-rl.github.io/">SGS</a>, designed by <strong>Mateo Guaman Castro</strong>. Original design and code © 2026 Mateo Guaman Castro, <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>. This adaptation changes the layout, typography, colors, content, and video interactions. Inspired by Swiss / International Typographic Style, with acknowledgment to <a href="https://neoneo.ch/">neoneo.ch</a>, also credited by the original designer. <a href="https://sgs-rl.github.io/terms/">Original terms ↗</a></p><p>All videos shown here come from Diverse-Manip-RL simulations and real-world experiments. No SGS videos, paper figures, or experimental results are reproduced.<br><br>© 2026 Diverse-Manip-RL project contributors.</p></div>
+  <div class="footer-title"><a href="#page-title">Dr.<br>Grasp-RL<span>↗</span></a><div><span class="mono">DEXTEROUS MANIPULATION</span><p>Many ways to grasp.<br>One policy.</p><a href="https://github.com/xkq1qkx/Diverse-Manip-RL-web">Website source ↗</a></div></div>
+  <div class="credits-grid"><span class="mono">DESIGN & ATTRIBUTION</span><p>Design inspired by <a href="https://sgs-rl.github.io/">SGS</a>, designed by <strong>Mateo Guaman Castro</strong>. Original design and code © 2026 Mateo Guaman Castro, <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>. This adaptation changes the layout, typography, colors, content, and video interactions. Inspired by Swiss / International Typographic Style, with acknowledgment to <a href="https://neoneo.ch/">neoneo.ch</a>, also credited by the original designer. <a href="https://sgs-rl.github.io/terms/">Original terms ↗</a></p><p>All videos shown here come from Dr. Grasp-RL simulations and real-world experiments. No SGS videos, paper figures, or experimental results are reproduced.<br><br>© 2026 Dr. Grasp-RL project contributors.</p></div>
 </footer>
 </body>
 </html>
