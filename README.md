@@ -5,9 +5,8 @@
 The paper edition adds the project film, a brief curriculum and distillation
 overview, paper figures, teacher/student success tables, and the closed-loop retry
 breakdown. Content is based on the November 19, 2026 manuscript. Author affiliations
-follow the project owner's clarification: Kunqi Xu and Xueyan Zou are at Tsinghua
-University; Xiaokang Sun is affiliated with both Tsinghua University and Georgia
-Institute of Technology.
+follow the project owner's clarification: Kunqi Xu, Xiaokang Sun, and Xueyan Zou
+are listed at Tsinghua University — IEI Lab.
 
 ## Paper, code, and live demo buttons
 
