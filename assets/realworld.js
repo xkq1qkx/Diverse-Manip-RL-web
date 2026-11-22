@@ -17,7 +17,7 @@
   expandButton.type = "button";
   expandButton.className = "realworld-card realworld-expand";
   expandButton.setAttribute("aria-controls", "realworld-grid");
-  expandButton.innerHTML = '<span class="rw-expand-icon" aria-hidden="true">↗</span><span class="rw-expand-title">Show all<br>videos</span><span class="rw-expand-meta mono"></span>';
+  expandButton.innerHTML = '<span class="rw-expand-title">Show all<br>videos</span><span class="rw-expand-meta mono"></span>';
   expandButton.addEventListener("click", () => {
     const firstHidden = $("realworld-grid").querySelector("[data-clip][hidden]");
     allExpanded = true;
@@ -44,7 +44,7 @@
     cover.append(image, play, time);
     const label = document.createElement("span"); label.className = "rw-card-caption";
     const title = document.createElement("strong"); title.textContent = clip.groupName;
-    const number = document.createElement("small"); number.textContent = "TAKE " + pad(clip.number) + " ↗";
+    const number = document.createElement("small"); number.textContent = "TAKE " + pad(clip.number);
     label.append(title, number); button.append(cover, label);
     button.addEventListener("click", () => open(clip.id, true, button));
     return button;
@@ -65,8 +65,7 @@
     $("realworld-collapse").setAttribute("aria-expanded", String(allExpanded));
     const visible = Math.min(limit, cards.length);
     $("realworld-count").textContent = (visible < cards.length ? visible + " OF " : "") + cards.length + " RECORDINGS";
-    $("realworld-status").textContent = (collapsed ? "Select Show all videos to expand the gallery, or choose an object. " : "")
-      + "Default playback is 2×. Select 1× in the player for original speed. All videos are silent.";
+    $("realworld-status").textContent = "Silent videos · Playback speed is adjustable in the player.";
   }
   let resizeFrame;
   window.addEventListener("resize", () => {
@@ -102,7 +101,7 @@
     $("realworld-next").disabled = index < 0 || index >= clips.length - 1;
     $("realworld-download").href = selected.video;
     $("realworld-download").download = selected.id + "-realworld.mp4";
-    $("realworld-share").textContent = "Copy clip link ↗";
+    $("realworld-share").textContent = "Copy clip link";
     status("Loading recording…");
     if (!dialog.open) dialog.showModal();
     if (autoplay) {
@@ -157,7 +156,7 @@
     url.searchParams.set("realworld", selected.id); url.hash = "realworld";
     try {
       await navigator.clipboard.writeText(url.href);
-      $("realworld-share").textContent = "Link copied ✓";
+      $("realworld-share").textContent = "Link copied";
     } catch (_) { window.prompt("Copy this recording link:", url.href); }
   });
   player.addEventListener("loadedmetadata", () => {

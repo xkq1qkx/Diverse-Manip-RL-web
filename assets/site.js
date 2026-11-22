@@ -95,8 +95,8 @@
     const url = new URL(location.href); url.hash = "explore";
     try {
       await navigator.clipboard.writeText(url.href);
-      $("share-clip").textContent = "Link copied ✓";
-      setTimeout(() => { $("share-clip").textContent = "Copy clip link ↗"; }, 2200);
+      $("share-clip").textContent = "Link copied";
+      setTimeout(() => { $("share-clip").textContent = "Copy clip link"; }, 2200);
     } catch (_) { window.prompt("Copy this clip link:", url.href); }
   });
   videos.forEach((video) => {
@@ -202,7 +202,7 @@
     $("split-tabs").querySelectorAll("button").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.split === split));
     });
-    $("explore-title").textContent = split === "test" ? "Grasping unseen objects." : "Grasping training objects.";
+    $("explore-title").textContent = "Simulation demos";
     $("split-label").textContent = split === "test" ? "UNSEEN TEST OBJECTS" : "SEEN TRAINING OBJECTS";
     $("split-description").innerHTML = split === "test"
       ? "These test objects were <strong>never seen during training</strong>. Browse <strong>" + catalog.categoryCount + " categories</strong> and " + catalog.clipCount + " rollouts."
@@ -229,7 +229,7 @@
       image.alt = obj.name + " · " + label + " · Final frame in simulation"; image.width = 480; image.height = 270;
       imageBox.append(image);
       const meta = document.createElement("span"), name = document.createElement("strong"), note = document.createElement("small");
-      name.textContent = obj.name; note.className = "mono"; note.textContent = pad(index+1) + " / " + obj.clips.length + " TAKES ↗";
+      name.textContent = obj.name; note.className = "mono"; note.textContent = pad(index+1) + " / " + obj.clips.length + " TAKES";
       meta.append(name, note); card.append(imageBox, meta);
       card.addEventListener("click", () => {
         setSplit(key, obj.id);
