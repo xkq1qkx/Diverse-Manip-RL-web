@@ -11,8 +11,9 @@ are listed at Tsinghua University — IEI Lab.
 ## ArXiv, code, and live demo buttons
 
 Edit `assets/resources.json` to set `paper`, `code`, and `demo` URLs. The ArXiv
-button links to https://arxiv.org/abs/2611.29610. Code and live demo destinations
-remain empty until those resources are ready. Empty destinations display
+button links to https://arxiv.org/abs/2611.29610. The live demo links to
+https://huggingface.co/spaces/robokq/DR-Grasp-RL. The code destination remains empty
+until it is ready. Empty destinations display
 "Coming soon" without navigating or jumping to the top of the page. Adding an
 HTTP(S) destination enables that button. No paper PDF or model files are published
 by this website update.

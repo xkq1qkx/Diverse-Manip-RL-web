@@ -9,7 +9,7 @@
       if (link.getAttribute('aria-disabled') === 'true' && ['Enter', ' '].includes(event.key)) event.preventDefault();
     });
   }
-  fetch('assets/resources.json?v=20261124-arxiv').then(response => {
+  fetch('assets/resources.json?v=20261125-live-demo').then(response => {
     if (!response.ok) throw new Error('Resources unavailable');
     return response.json();
   }).then(urls => {
