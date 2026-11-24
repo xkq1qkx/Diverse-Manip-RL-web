@@ -8,10 +8,11 @@ breakdown. Content is based on the November 19, 2026 manuscript. Author affiliat
 follow the project owner's clarification: Kunqi Xu, Xiaokang Sun, and Xueyan Zou
 are listed at Tsinghua University — IEI Lab.
 
-## Paper, code, and live demo buttons
+## ArXiv, code, and live demo buttons
 
-Edit `assets/resources.json` to set `paper`, `code`, and `demo` URLs. All three are
-intentionally empty until the resources are ready. Empty destinations display
+Edit `assets/resources.json` to set `paper`, `code`, and `demo` URLs. The ArXiv
+button links to https://arxiv.org/abs/2611.29610. Code and live demo destinations
+remain empty until those resources are ready. Empty destinations display
 "Coming soon" without navigating or jumping to the top of the page. Adding an
 HTTP(S) destination enables that button. No paper PDF or model files are published
 by this website update.

@@ -1,4 +1,4 @@
-/* Resource destinations intentionally stay empty until they are ready to publish. */
+/* Published resources are linked; unpublished destinations stay disabled. */
 (() => {
   const resources = document.querySelectorAll('[data-resource]');
   for (const link of resources) {
@@ -9,7 +9,7 @@
       if (link.getAttribute('aria-disabled') === 'true' && ['Enter', ' '].includes(event.key)) event.preventDefault();
     });
   }
-  fetch('assets/resources.json?v=20261119').then(response => {
+  fetch('assets/resources.json?v=20261124-arxiv').then(response => {
     if (!response.ok) throw new Error('Resources unavailable');
     return response.json();
   }).then(urls => {
